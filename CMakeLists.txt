@@ -17,6 +17,7 @@ add_executable(student_portal
     main.cpp
     src/Student.cpp
     src/Course.cpp
+    src/StudentPortal.cpp
 )
 
 target_include_directories(student_portal
