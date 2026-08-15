@@ -66,7 +66,9 @@ int main() {
     StudentPortal portal;
     LoginManager login;
     const std::string dataDir = "data";
+    const std::string lastLoginPath = dataDir + "/last_logins.txt";
     std::filesystem::create_directories(dataDir);
+    login.loadLastLogins(lastLoginPath);
 
     bool running = true;
     while (running) {
@@ -133,7 +135,7 @@ int main() {
                 if (!requireLogin(login)) {
                     break;
                 }
-                if (portal.saveToDirectory(dataDir)) {
+                if (portal.saveToDirectory(dataDir) && login.saveLastLogins(lastLoginPath)) {
                     std::cout << "Saved to " << dataDir << "/\n";
                 } else {
                     std::cout << "Save failed.\n";
@@ -149,12 +151,19 @@ int main() {
             case 8: {
                 const std::string username = readLine("Username: ");
                 const std::string password = readLine("Password: ");
+                const std::string previous = login.lastLoginOf(username);
                 if (login.isLocked(username)) {
                     std::cout << "Account locked after "
                               << LoginManager::kMaxFailedAttempts
                               << " failed attempts.\n";
                 } else if (login.authenticate(username, password)) {
                     std::cout << "Logged in as " << login.currentUsername() << ".\n";
+                    if (previous.empty()) {
+                        std::cout << "First recorded login.\n";
+                    } else {
+                        std::cout << "Last login: " << previous << ".\n";
+                    }
+                    login.saveLastLogins(lastLoginPath);
                 } else {
                     const int used = login.failedAttempts(username);
                     const int left = LoginManager::kMaxFailedAttempts - used;
