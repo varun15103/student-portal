@@ -1,0 +1,44 @@
+# Compiled binaries and object files
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Build output
+build/
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+*.ilk
+*.pdb
+*.idb
+
+# CMake / Make
+CMakeCache.txt
+CMakeFiles/
+cmake-install.cmake
+Makefile
+*.cmake
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vs/
+
+# Logs and OS junk
+*.log
+*.tmp
+Thumbs.db
+Desktop.ini
+.DS_Store
