@@ -27,3 +27,10 @@ From the `student-portal` directory:
 ```bash
 cmake -S . -B build
 cmake --build build
+
+## Run
+
+After a successful build, start the portal:
+
+```bash
+./build/student_portal
