@@ -1,4 +1,5 @@
 #include "LoginManager.h"
+#include "ProfileStore.h"
 #include "StudentPortal.h"
 
 #include <filesystem>
@@ -49,6 +50,8 @@ void printMenu(const LoginManager& login) {
               << "7. Load records\n"
               << "8. Login\n"
               << "9. Logout\n"
+              << "10. View profile\n"
+              << "11. Edit profile\n"
               << "0. Exit\n";
 }
 
@@ -65,6 +68,7 @@ bool requireLogin(const LoginManager& login) {
 int main() {
     StudentPortal portal;
     LoginManager login;
+    ProfileStore profiles;
     const std::string dataDir = "data";
     const std::string lastLoginPath = dataDir + "/last_logins.txt";
     std::filesystem::create_directories(dataDir);
@@ -179,6 +183,35 @@ int main() {
                     std::cout << "Logged out.\n";
                 }
                 break;
+            case 10: {
+                if (!requireLogin(login)) {
+                    break;
+                }
+                const int studentId = readInt("Student id: ");
+                const Profile* profile = profiles.find(studentId);
+                if (profile == nullptr) {
+                    std::cout << "No profile for that student id.\n";
+                } else {
+                    std::cout << profile->toLine() << '\n';
+                }
+                break;
+            }
+            case 11: {
+                if (!requireLogin(login)) {
+                    break;
+                }
+                const int studentId = readInt("Student id: ");
+                const std::string name = readLine("Display name: ");
+                const std::string email = readLine("Email: ");
+                const int gpaTimesTen = readInt("GPA x10 (e.g. 35 for 3.5): ");
+                Profile profile(studentId, name, email, gpaTimesTen / 10.0);
+                if (profiles.upsert(profile)) {
+                    std::cout << "Profile saved. Standing: " << profile.standing() << ".\n";
+                } else {
+                    std::cout << "Invalid profile. Check id, name, email, and GPA 0-4.\n";
+                }
+                break;
+            }
             case 0:
                 running = false;
                 break;
