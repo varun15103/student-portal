@@ -13,3 +13,9 @@ Student Portal is a rewrite of a legacy student-management tool. It will store s
 - Login with session handling
 - Student profiles and a dashboard
 - User settings saved to a config file
+
+## Prerequisites
+
+- Git
+- A C++17 compiler (g++ on MinGW, or MSVC)
+- CMake 3.16 or newer
