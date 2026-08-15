@@ -14,7 +14,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(student_portal
-    sp.cpp
+    src/sp.cpp
     src/Student.cpp
     src/Course.cpp
     src/StudentPortal.cpp
