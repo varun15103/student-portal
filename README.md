@@ -19,3 +19,11 @@ Student Portal is a rewrite of a legacy student-management tool. It will store s
 - Git
 - A C++17 compiler (g++ on MinGW, or MSVC)
 - CMake 3.16 or newer
+
+## Build
+
+From the `student-portal` directory:
+
+```bash
+cmake -S . -B build
+cmake --build build
