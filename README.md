@@ -1,3 +1,15 @@
 # Student Portal
 
 A C++ command-line application for managing students, courses, and enrollments.
+
+## Overview
+
+Student Portal is a rewrite of a legacy student-management tool. It will store students and courses, handle enrollment, and expose a menu-driven CLI.
+
+## Planned features
+
+- Student and course registration
+- Enrollment and course lists
+- Login with session handling
+- Student profiles and a dashboard
+- User settings saved to a config file
