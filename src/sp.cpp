@@ -1,3 +1,4 @@
+#include "Dashboard.h"
 #include "LoginManager.h"
 #include "ProfileStore.h"
 #include "StudentPortal.h"
@@ -52,6 +53,9 @@ void printMenu(const LoginManager& login) {
               << "9. Logout\n"
               << "10. View profile\n"
               << "11. Edit profile\n"
+              << "12. View dashboard\n"
+              << "13. Student enrollment summary\n"
+              << "14. Notifications\n"
               << "0. Exit\n";
 }
 
@@ -69,6 +73,7 @@ int main() {
     StudentPortal portal;
     LoginManager login;
     ProfileStore profiles;
+    Dashboard dashboard;
     const std::string dataDir = "data";
     const std::string lastLoginPath = dataDir + "/last_logins.txt";
     std::filesystem::create_directories(dataDir);
@@ -212,6 +217,28 @@ int main() {
                 }
                 break;
             }
+            case 12: {
+                dashboard.refresh(portal);
+                std::cout << dashboard.summary() << '\n';
+                std::cout << "Average course credits: " << dashboard.averageCredits(portal)
+                          << '\n';
+                break;
+            }
+            case 13: {
+                const int studentId = readInt("Student id: ");
+                std::cout << dashboard.enrollmentSummary(portal, studentId) << '\n';
+                std::cout << "Estimated GPA: " << dashboard.gpaFor(portal, studentId) << '\n';
+                break;
+            }
+            case 14:
+                if (dashboard.notices().empty()) {
+                    std::cout << "No notifications.\n";
+                } else {
+                    for (const auto& message : dashboard.notices()) {
+                        std::cout << "- " << message << '\n';
+                    }
+                }
+                break;
             case 0:
                 running = false;
                 break;
