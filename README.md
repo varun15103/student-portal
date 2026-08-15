@@ -38,3 +38,21 @@ After a successful build, start the portal:
 ```
 
 ## Project structure
+
+```
+student-portal/
+  CMakeLists.txt
+  README.md
+  include/          # public headers
+  src/              # Student, Course, portal, CLI
+  data/             # saved students, courses, settings
+```
+
+Headers will live under `include/` and sources under `src/` after the first code layout pass.
+
+## Data files and extending the portal
+
+Saved records will go under `data/` (students, courses, enrollments, settings). Do not commit generated `build/` output; it is ignored.
+
+To add a feature, create a branch, add sources under `src/` and headers under `include/`, then merge back to `main`.
+
