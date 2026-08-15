@@ -13,6 +13,7 @@ public:
     int courseCount() const;
     int enrollmentCount() const;
     std::string summary() const;
+    std::string enrollmentSummary(const StudentPortal& portal, int studentId) const;
 
 private:
     int studentCount_ = 0;
