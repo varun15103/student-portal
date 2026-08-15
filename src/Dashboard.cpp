@@ -10,6 +10,7 @@ void Dashboard::refresh(const StudentPortal& portal) {
     for (const auto& student : portal.students()) {
         enrollmentCount_ += static_cast<int>(portal.courseIdsFor(student.id()).size());
     }
+    addNotice(std::string("Dashboard refreshed: ") + summary());
 }
 
 int Dashboard::studentCount() const {
@@ -75,4 +76,18 @@ double Dashboard::gpaFor(const StudentPortal& portal, int studentId) const {
         weighted += static_cast<double>(course->credits()) * 3.0;
     }
     return credits == 0 ? 0.0 : weighted / static_cast<double>(credits);
+}
+
+void Dashboard::addNotice(const std::string& message) {
+    if (!message.empty()) {
+        notices_.push_back(message);
+    }
+}
+
+void Dashboard::clearNotices() {
+    notices_.clear();
+}
+
+const std::vector<std::string>& Dashboard::notices() const {
+    return notices_;
 }
