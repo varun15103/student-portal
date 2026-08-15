@@ -20,6 +20,16 @@ const std::string& LoginManager::currentUsername() const {
     return currentUsername_;
 }
 
+bool LoginManager::isLocked(const std::string& username) const {
+    const auto found = failedAttempts_.find(username);
+    return found != failedAttempts_.end() && found->second >= kMaxFailedAttempts;
+}
+
+int LoginManager::failedAttempts(const std::string& username) const {
+    const auto found = failedAttempts_.find(username);
+    return found == failedAttempts_.end() ? 0 : found->second;
+}
+
 bool LoginManager::registerUser(const std::string& username, const std::string& password) {
     if (username.empty() || password.size() < 6 || credentials_.count(username) != 0) {
         return false;
@@ -29,10 +39,15 @@ bool LoginManager::registerUser(const std::string& username, const std::string& 
 }
 
 bool LoginManager::authenticate(const std::string& username, const std::string& password) {
-    const auto found = credentials_.find(username);
-    if (found == credentials_.end() || found->second != fingerprint(password)) {
+    if (isLocked(username)) {
         return false;
     }
+    const auto found = credentials_.find(username);
+    if (found == credentials_.end() || found->second != fingerprint(password)) {
+        failedAttempts_[username] += 1;
+        return false;
+    }
+    failedAttempts_[username] = 0;
     return beginSession(username);
 }
 

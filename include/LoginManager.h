@@ -6,10 +6,14 @@
 
 class LoginManager {
 public:
+    static constexpr int kMaxFailedAttempts = 3;
+
     LoginManager();
 
     bool isLoggedIn() const;
     const std::string& currentUsername() const;
+    bool isLocked(const std::string& username) const;
+    int failedAttempts(const std::string& username) const;
 
     bool registerUser(const std::string& username, const std::string& password);
     bool authenticate(const std::string& username, const std::string& password);
@@ -22,6 +26,7 @@ private:
     bool loggedIn_ = false;
     std::string currentUsername_;
     std::unordered_map<std::string, std::string> credentials_;
+    std::unordered_map<std::string, int> failedAttempts_;
 };
 
 #endif

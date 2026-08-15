@@ -149,10 +149,16 @@ int main() {
             case 8: {
                 const std::string username = readLine("Username: ");
                 const std::string password = readLine("Password: ");
-                if (login.authenticate(username, password)) {
+                if (login.isLocked(username)) {
+                    std::cout << "Account locked after "
+                              << LoginManager::kMaxFailedAttempts
+                              << " failed attempts.\n";
+                } else if (login.authenticate(username, password)) {
                     std::cout << "Logged in as " << login.currentUsername() << ".\n";
                 } else {
-                    std::cout << "Login failed.\n";
+                    const int used = login.failedAttempts(username);
+                    const int left = LoginManager::kMaxFailedAttempts - used;
+                    std::cout << "Login failed. Attempts left: " << left << ".\n";
                 }
                 break;
             }
