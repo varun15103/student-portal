@@ -14,6 +14,8 @@ public:
     int enrollmentCount() const;
     std::string summary() const;
     std::string enrollmentSummary(const StudentPortal& portal, int studentId) const;
+    double averageCredits(const StudentPortal& portal) const;
+    double gpaFor(const StudentPortal& portal, int studentId) const;
 
 private:
     int studentCount_ = 0;

@@ -47,3 +47,32 @@ std::string Dashboard::enrollmentSummary(const StudentPortal& portal, int studen
     }
     return out.str();
 }
+
+double Dashboard::averageCredits(const StudentPortal& portal) const {
+    if (portal.courses().empty()) {
+        return 0.0;
+    }
+    int total = 0;
+    for (const auto& course : portal.courses()) {
+        total += course.credits();
+    }
+    return static_cast<double>(total) / static_cast<double>(portal.courses().size());
+}
+
+double Dashboard::gpaFor(const StudentPortal& portal, int studentId) const {
+    const std::vector<int> courseIds = portal.courseIdsFor(studentId);
+    if (courseIds.empty()) {
+        return 0.0;
+    }
+    double weighted = 0.0;
+    int credits = 0;
+    for (int courseId : courseIds) {
+        const Course* course = portal.findCourse(courseId);
+        if (course == nullptr) {
+            continue;
+        }
+        credits += course->credits();
+        weighted += static_cast<double>(course->credits()) * 3.0;
+    }
+    return credits == 0 ? 0.0 : weighted / static_cast<double>(credits);
+}
