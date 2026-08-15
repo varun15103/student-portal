@@ -16,6 +16,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(student_portal
     main.cpp
     src/Student.cpp
+    src/Course.cpp
 )
 
 target_include_directories(student_portal
