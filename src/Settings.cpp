@@ -19,6 +19,10 @@ bool Settings::dashboardAlerts() const {
     return dashboardAlerts_;
 }
 
+bool Settings::compactMode() const {
+    return compactMode_;
+}
+
 void Settings::setTheme(std::string theme) {
     theme_ = std::move(theme);
 }
@@ -35,6 +39,10 @@ void Settings::setDashboardAlerts(bool enabled) {
     dashboardAlerts_ = enabled;
 }
 
+void Settings::setCompactMode(bool enabled) {
+    compactMode_ = enabled;
+}
+
 bool Settings::isValid() const {
     return (theme_ == "light" || theme_ == "dark") && !displayName_.empty();
 }
@@ -43,7 +51,8 @@ std::string Settings::toLine() const {
     std::ostringstream out;
     out << "Theme: " << theme_ << " | Display name: " << displayName_
         << " | Email notices: " << (emailNotifications_ ? "on" : "off")
-        << " | Dashboard alerts: " << (dashboardAlerts_ ? "on" : "off");
+        << " | Dashboard alerts: " << (dashboardAlerts_ ? "on" : "off")
+        << " | Compact: " << (compactMode_ ? "on" : "off");
     return out.str();
 }
 
@@ -56,6 +65,7 @@ bool Settings::saveToFile(const std::string& path) const {
     out << "displayName=" << displayName_ << '\n';
     out << "emailNotifications=" << (emailNotifications_ ? "1" : "0") << '\n';
     out << "dashboardAlerts=" << (dashboardAlerts_ ? "1" : "0") << '\n';
+    out << "compactMode=" << (compactMode_ ? "1" : "0") << '\n';
     return true;
 }
 
@@ -80,6 +90,8 @@ bool Settings::loadFromFile(const std::string& path) {
             emailNotifications_ = (value == "1");
         } else if (key == "dashboardAlerts") {
             dashboardAlerts_ = (value == "1");
+        } else if (key == "compactMode") {
+            compactMode_ = (value == "1");
         }
     }
     return true;
