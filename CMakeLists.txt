@@ -22,6 +22,7 @@ add_executable(student_portal
     src/Profile.cpp
     src/ProfileStore.cpp
     src/Dashboard.cpp
+    src/Settings.cpp
 )
 
 target_include_directories(student_portal

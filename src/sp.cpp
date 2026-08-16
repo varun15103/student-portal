@@ -1,6 +1,7 @@
 #include "Dashboard.h"
 #include "LoginManager.h"
 #include "ProfileStore.h"
+#include "Settings.h"
 #include "StudentPortal.h"
 
 #include <filesystem>
@@ -56,6 +57,8 @@ void printMenu(const LoginManager& login) {
               << "12. View dashboard\n"
               << "13. Student enrollment summary\n"
               << "14. Notifications\n"
+              << "15. View settings\n"
+              << "16. Edit settings\n"
               << "0. Exit\n";
 }
 
@@ -74,10 +77,13 @@ int main() {
     LoginManager login;
     ProfileStore profiles;
     Dashboard dashboard;
+    Settings settings;
     const std::string dataDir = "data";
     const std::string lastLoginPath = dataDir + "/last_logins.txt";
+    const std::string settingsPath = dataDir + "/settings.txt";
     std::filesystem::create_directories(dataDir);
     login.loadLastLogins(lastLoginPath);
+    settings.loadFromFile(settingsPath);
 
     bool running = true;
     while (running) {
@@ -144,7 +150,8 @@ int main() {
                 if (!requireLogin(login)) {
                     break;
                 }
-                if (portal.saveToDirectory(dataDir) && login.saveLastLogins(lastLoginPath)) {
+                if (portal.saveToDirectory(dataDir) && login.saveLastLogins(lastLoginPath) &&
+                    settings.saveToFile(settingsPath)) {
                     std::cout << "Saved to " << dataDir << "/\n";
                 } else {
                     std::cout << "Save failed.\n";
@@ -152,6 +159,7 @@ int main() {
                 break;
             case 7:
                 if (portal.loadFromDirectory(dataDir)) {
+                    settings.loadFromFile(settingsPath);
                     std::cout << "Loaded from " << dataDir << "/\n";
                 } else {
                     std::cout << "Load failed. Save once to create data files.\n";
@@ -239,6 +247,30 @@ int main() {
                     }
                 }
                 break;
+            case 15:
+                std::cout << settings.toLine() << '\n';
+                break;
+            case 16: {
+                if (!requireLogin(login)) {
+                    break;
+                }
+                const std::string theme = readLine("Theme (light/dark): ");
+                const std::string name = readLine("Display name: ");
+                const int emailOn = readInt("Email notices 1=on 0=off: ");
+                const int alertsOn = readInt("Dashboard alerts 1=on 0=off: ");
+                settings.setTheme(theme);
+                settings.setDisplayName(name);
+                settings.setEmailNotifications(emailOn != 0);
+                settings.setDashboardAlerts(alertsOn != 0);
+                if (!settings.isValid()) {
+                    std::cout << "Invalid settings. Theme must be light or dark, name cannot be empty.\n";
+                } else if (settings.saveToFile(settingsPath)) {
+                    std::cout << "Settings saved.\n";
+                } else {
+                    std::cout << "Could not write settings file.\n";
+                }
+                break;
+            }
             case 0:
                 running = false;
                 break;
