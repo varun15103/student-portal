@@ -15,6 +15,7 @@ public:
     void setEmailNotifications(bool enabled);
     void setDashboardAlerts(bool enabled);
 
+    bool isValid() const;
     std::string toLine() const;
 
     bool saveToFile(const std::string& path) const;

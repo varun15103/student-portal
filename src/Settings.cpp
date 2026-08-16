@@ -35,6 +35,10 @@ void Settings::setDashboardAlerts(bool enabled) {
     dashboardAlerts_ = enabled;
 }
 
+bool Settings::isValid() const {
+    return (theme_ == "light" || theme_ == "dark") && !displayName_.empty();
+}
+
 std::string Settings::toLine() const {
     std::ostringstream out;
     out << "Theme: " << theme_ << " | Display name: " << displayName_
