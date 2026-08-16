@@ -40,6 +40,7 @@ const std::string& LoginManager::currentUsername() const {
 }
 
 bool LoginManager::isLocked(const std::string& username) const {
+    // Lock the account after three failed passwords so brute-force guesses stop.
     const auto found = failedAttempts_.find(username);
     return found != failedAttempts_.end() && found->second >= kMaxFailedAttempts;
 }
