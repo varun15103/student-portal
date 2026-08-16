@@ -52,7 +52,7 @@ Headers will live under `include/` and sources under `src/` after the first code
 
 ## Data files and extending the portal
 
-Saved records will go under `data/` (students, courses, enrollments, settings). Do not commit generated `build/` output; it is ignored.
+Saved records will go under `data/` (students, courses, enrollments, settings). The portal can also print a simple **enrollment report** from the dashboard. Do not commit generated `build/` output; it is ignored.
 
 To add a feature, create a branch, add sources under `src/` and headers under `include/`, then merge back to `main`.
 
