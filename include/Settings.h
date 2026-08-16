@@ -17,6 +17,9 @@ public:
 
     std::string toLine() const;
 
+    bool saveToFile(const std::string& path) const;
+    bool loadFromFile(const std::string& path);
+
 private:
     std::string theme_ = "light";
     std::string displayName_ = "Student";
